@@ -213,7 +213,7 @@ define([
     });
 
     //Set all scenes to needing update
-    for (var i = 0; i < this.sceneViews.length, i++) {
+    for (var i = 0; i < this.sceneViews.length; i++) {
       this.sceneViews[i].needsUpdate = true;
     }
   };
@@ -224,17 +224,15 @@ define([
    *
    **/
   EmperorController.prototype.render = function() {
-    var needsRender = _.some(this.sceneViews, function(sv) {
-      return sv.checkUpdate();
-    });
-
-    if (needsRender) {
-      this.renderer.setViewport(0, 0, this.width, this.height);
-      this.renderer.clear();
-      for (var i = 0; i < this.sceneViews.length; i++) {
-        this.sceneViews[i].render();
+    var scope = this;
+    $.each(this.sceneViews, function(i, sv) {
+      console.log(i, sv);
+      if (sv.checkUpdate()) {
+        scope.renderer.setViewport(0, 0, scope.width, scope.height);
+        scope.renderer.clear();
+        sv.render();
       }
-    }
+    });
   };
 
   /**
