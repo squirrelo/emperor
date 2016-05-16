@@ -459,6 +459,7 @@ define([
       idx = element.idx;
       scope.markers[idx].material.color = new THREE.Color(color);
     });
+    scope.needsUpdate = true;
   };
 
   var DISCRETE = 'Discrete';
