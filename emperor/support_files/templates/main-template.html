@@ -27,6 +27,8 @@ requirejs.config({
   /* THREE.js and plugins */
   'three': '{{ base_url }}/vendor/js/three.min',
   'orbitcontrols': '{{ base_url }}/vendor/js/three.js-plugins/OrbitControls',
+  'projector': '{{ base_url }}/vendor/js/three.js-plugins/Projector',
+  'svgrenderer': '{{ base_url }}/vendor/js/three.js-plugins/SVGRenderer',
 
   /* SlickGrid */
   'slickcore': '{{ base_url }}/vendor/js/slick.core.min',
@@ -68,6 +70,9 @@ requirejs.config({
   },
   'orbitcontrols': {
     'deps': ['three']
+  },
+  'svgrenderer': {
+    'deps': ['orbitcontrols', 'projector']
   },
 'slickcore': ['jqueryui'],
 'slickgrid': ['slickcore', 'jquery_drag', 'slickformatters',

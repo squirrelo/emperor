@@ -8,10 +8,11 @@ define([
     "colorviewcontroller",
     "visibilitycontroller",
     "shapecontroller",
-    "filesaver"
+    "filesaver",
+    "svgrenderer"
 ], function ($, _, contextMenu, THREE, DecompositionView, ScenePlotView3D,
              ColorViewController, VisibilityController, ShapeController,
-             FileSaver) {
+             FileSaver, SVGRenderer) {
 
   /**
    *
@@ -304,11 +305,18 @@ define([
           }
         },
         "sep1": "---------",
-        'saveImage': {
+        'saveImagePNG': {
           name: 'Save Image (PNG)',
           icon: 'edit',
           callback: function(key, opts) {
             scope.screenshot();
+          }
+        },
+        'saveImageSVG': {
+          name: 'Save Image (SVG)',
+          icon: 'edit',
+          callback: function(key, opts) {
+            scope.screenshot('svg');
           }
         }
       }
@@ -332,14 +340,33 @@ define([
    **/
   EmperorController.prototype.screenshot = function(type) {
     type = type || 'png';
-    // Render all scenes so it's rendered in same context as save
-    for (var i = 0; i < this.sceneViews.length; i++) {
-      this.sceneViews[i].render();
+
+    if (type == 'svg') {
+      // Assuming single sceneview for now
+      var sceneview = this.sceneViews[0];
+
+      var svgRenderer = new THREE.SVGRenderer();
+      svgRenderer.setSize(this.width, this.height);
+      svgRenderer.setClearColor(this.rendererBackgroundColor);
+      svgRenderer.render(sceneview.scene, sceneview.camera);
+
+      var XMLS = new XMLSerializer();
+      var c = XMLS.serializeToString(svgRenderer.domElement);
+      // Create DOM-less download link and click it to start download
+      // Save the file
+      var blob = new Blob([c], {type: "image/svg"});
+      saveAs(blob, "emperor.svg");
     }
-    var c = this.renderer.domElement.toDataURL("image/" + type);
-    // Create DOM-less download link and click it to start download
-    var download = $('<a href="' + c + '" download="emperor.' + type + '">');
-    download.get(0).click();
+    else {
+      // Render all scenes so it's rendered in same context as save
+      for (var i = 0; i < this.sceneViews.length; i++) {
+        this.sceneViews[i].render();
+      }
+      var c = this.renderer.domElement.toDataURL("image/" + type);
+      // Create DOM-less download link and click it to start download
+      var download = $('<a href="' + c + '" download="emperor.' + type + '">');
+      download.get(0).click();
+    }
   };
 
   /**

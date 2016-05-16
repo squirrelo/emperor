@@ -65,7 +65,6 @@ define([
     // Create scale div and checkbox for whether using scalar data or not
     this.$scaleDiv = $("<div>");
     this.$colorScale = $("<svg width='90%' height='100%' style='display:block;margin:auto;'></svg>");
-    this.$scaleDiv.append(this.$colorScale);
     this.$scaled = $("<input type='checkbox'>");
     this.$scaledLabel = $("<label for='scaled'>Continuous values</label>");
 
