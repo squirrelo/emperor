@@ -143,6 +143,41 @@ define([
         event.preventDefault();  //cancel system double-click event
     });
 
+    //Add info div as bottom of canvas
+    this.$info = $('<div>');
+    this.$info.css('position', 'absolute')
+      .css('bottom', 0)
+      .css('height', 16)
+      .css('width', '100%')
+      .css('padding-left', 10)
+      .css('padding-right', 10)
+      .css('font-size', 12)
+      .css('background-color', 'rgb(238, 238, 238)')
+      .css('border', '1px solid black')
+      .css('font-family', 'Verdana,Arial,sans-serif')
+      .hide();
+    $(this.renderer.domElement).parent().append(this.$info);
+
+    // register callback for populating info with clicked sample name
+    // set the timeout for fading out the info div
+    var infoTimeout = setTimeout(function() {
+        scope.$info.fadeOut();
+      }, 2000);
+
+    this._subscribers.click.push(function(n, i) {
+      clearTimeout(infoTimeout);
+
+      scope.$info.stop().data('timer');
+      scope.$info.text(n);
+      scope.$info.fadeIn(200);
+
+      // reset the timeout for fading out the info div
+      infoTimeout = setTimeout(function() {
+        scope.$info.fadeOut();
+        scope.$info.text('');
+      }, 2500);
+
+    });
   };
 
   /**
