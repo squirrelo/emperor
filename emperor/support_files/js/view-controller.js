@@ -84,9 +84,9 @@ define([
     this.$header = $('<div name="emperor-view-controller-header"></div>');
     this.$header.css('margin', '0 auto');
     this.$header.css('width', '100%');
-
     this.$body = $('<div name="emperor-view-controller-body"></div>');
     this.$body.css('margin', '0 auto');
+
     this.$body.css('width', '100%');
 
     // inherit the size of the container minus the space being used for the
@@ -389,6 +389,8 @@ define([
       // make the columns fit the available space whenever the window resizes
       // http://stackoverflow.com/a/29835739
       this.bodyGrid.setColumns(this.bodyGrid.getColumns());
+      // Resize the slickgrid canvas for the new body size.
+      this.bodyGrid.resizeCanvas();
     }
   };
 
