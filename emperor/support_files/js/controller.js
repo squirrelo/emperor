@@ -342,13 +342,14 @@ define([
     type = type || 'png';
 
     if (type == 'svg') {
-      // Assuming single sceneview for now
-      var sceneview = this.sceneViews[0];
-
       var svgRenderer = new THREE.SVGRenderer();
       svgRenderer.setSize(this.width, this.height);
       svgRenderer.setClearColor(this.rendererBackgroundColor);
-      svgRenderer.render(sceneview.scene, sceneview.camera);
+      // Render all scenes so it's rendered in same context as save
+      for (var i = 0; i < this.sceneViews.length; i++) {
+        var sceneview = this.sceneViews[i];
+        svgRenderer.render(sceneview.scene, sceneview.camera);
+      }
 
       var XMLS = new XMLSerializer();
       var c = XMLS.serializeToString(svgRenderer.domElement);
