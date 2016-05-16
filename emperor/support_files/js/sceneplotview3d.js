@@ -162,7 +162,7 @@ define([
 
       scope.$info.stop().data('timer');
       scope.$info.text(n);
-      scope.$info.show();
+      scope.$info.fadeIn(200);
 
       // reset the timeout for fading out the info div
       infoTimeout = setTimeout(function() {
@@ -170,8 +170,6 @@ define([
       }, 2000);
 
     });
-    console.log(this._subscribers);
-
   };
 
   /**
